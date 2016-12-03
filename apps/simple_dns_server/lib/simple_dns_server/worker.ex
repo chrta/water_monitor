@@ -26,10 +26,10 @@ It replies to all queries with a fixed IP.
   def init(ip) do
     {:ok, %{ip: ip}}
   end
-  
+
   def handle_call({:resolve, record}, _from, state) do
     query = hd(record.qdlist)
-    
+
     resource = %DNS.Resource{
       domain: query.domain,
       class: query.class,

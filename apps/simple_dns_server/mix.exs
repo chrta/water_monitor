@@ -37,7 +37,8 @@ defmodule SimpleDnsServer.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:dns, "~> 0.0.4"}
+      {:dns, "~> 0.0.4"},
+      {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
 end
