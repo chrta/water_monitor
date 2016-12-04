@@ -15,3 +15,5 @@ import_config "../apps/*/config/config.exs"
 #       level: :info,
 #       format: "$date $time [$level] $metadata$message\n",
 #       metadata: [:user_id]
+
+config :kitto, root: Path.dirname(__DIR__) <> "/apps/syr_dashboard", port: 4005
