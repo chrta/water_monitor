@@ -5,14 +5,14 @@ defmodule Kitto.Jobs.SyrDeviceInfo do
 
   require Logger
 
-  def stream(fun) do
+  def stream(id, fun) do
     Task.start_link fn ->
       stream = GenEvent.stream(:syr_event_manager)
       
       # call fun for all events
       for event <- stream do
 	case event do
-	  {_, %{prs: pressure}} -> fun.(%{value: pressure})
+	  {_, %{^id => value}} -> fun.(%{value: value})
 	  _ -> :skip
 	end
       end
@@ -44,4 +44,4 @@ end
 
 GenEvent.add_handler(:syr_event_manager, Kitto.Jobs.SyrDeviceInfo, [])
 
-job :syr_device_info, do: Kitto.Jobs.SyrDeviceInfo.stream(&(broadcast!(:syr_device_info, &1)))
+job :water_pressure_bar, do: Kitto.Jobs.SyrDeviceInfo.stream(:prs, &(broadcast!(:water_pressure_bar, &1)))
