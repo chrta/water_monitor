@@ -28,6 +28,7 @@ Widget.mount(class Meter extends Widget {
                readOnly="readonly"
                data-min={this.props.min}
                data-max={this.props.max}
+               data-step={this.props.step}
                data-angleoffset="-125"
                data-anglearc="250"
                data-width="200"/>
