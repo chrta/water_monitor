@@ -15,10 +15,10 @@
         data-sizey="1">
       <div class="widget-synergy"
            data-widget="Meter"
-           data-source="random"
-           data-title="Synergy"
+           data-source="syr_device_info"
+           data-title="Water Pressure[bar]"
            data-min="0"
-           data-max="100"></div>
+           data-max="10"></div>
     </li>
 
     <li data-row="1"
