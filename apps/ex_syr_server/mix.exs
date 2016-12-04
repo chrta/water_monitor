@@ -22,25 +22,13 @@ defmodule ExSyrServer.Mixfile do
      mod: {ExSyrServer, []}]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # To depend on another app inside the umbrella:
-  #
-  #   {:myapp, in_umbrella: true}
-  #
-  # Type "mix help deps" for more examples and options
   defp deps do
     [
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 1.0"},
       {:sweet_xml, "~> 0.6.2"},
-      {:credo, "~> 0.4", only: [:dev, :test]}
+      {:credo, "~> 0.4", only: [:dev, :test]},
+      {:ex_doc, "~> 0.14", only: :dev}
     ]
   end
 end
