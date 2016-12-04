@@ -19,11 +19,24 @@
            data-title="Water Pressure[bar]"
            data-min="0"
            data-max="10"
-	   data-step="0.1"></div>
+           data-step="0.1"></div>
+    </li>
+
+        <li data-row="1"
+        data-col="4"
+        data-sizex="1"
+        data-sizey="1">
+      <div class="widget-synergy"
+           data-widget="Meter"
+           data-source="remaining_salt"
+           data-title="Remaining Salt[weeks]"
+           data-min="0"
+           data-max="24"
+           data-step="1"></div>
     </li>
 
     <li data-row="1"
-        data-col="4"
+        data-col="5"
         data-sizex="1"
         data-sizey="2">
       <div class="widget-buzzwords"
