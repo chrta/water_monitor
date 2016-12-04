@@ -12,7 +12,7 @@ defmodule Kitto.Jobs.SyrDeviceInfo do
       # call fun for all events
       for event <- stream do
 	case event do
-	  {_, %{prs: pressure}} -> fun.(pressure)
+	  {_, %{prs: pressure}} -> fun.(%{value: pressure})
 	  _ -> :skip
 	end
       end
