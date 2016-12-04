@@ -1,0 +1,2 @@
+defmodule SyrDashboard do
+end
