@@ -14,7 +14,7 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
   dev: always ""
   scr: always "0" ??? This information is doubled in the xml?
   ver: Firmware version
-  fir: Firmware type
+  fir: Firmware type, e.g. "SLP0"
   lgo: always "1"
   prs: Water pressure [bar]
   pst: always "0"
