@@ -18,7 +18,7 @@ defmodule ExSyrServer.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:cowboy, :plug, :logger],
+    [applications: [:cowboy, :plug, :logger, :observer_cli],
      mod: {ExSyrServer, []}]
   end
 
@@ -28,7 +28,9 @@ defmodule ExSyrServer.Mixfile do
       {:plug, "~> 1.0"},
       {:sweet_xml, "~> 0.6.2"},
       {:credo, "~> 0.4", only: [:dev, :test]},
-      {:ex_doc, "~> 0.14", only: :dev}
+      {:ex_doc, "~> 0.14", only: :dev},
+      {:observer_cli, "~> 1.0.8"},
+      {:recon, "~> 2.3.2"}
     ]
   end
 end
