@@ -21,7 +21,7 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
   whu: always "0"
   owh: Outflowing water hardness [degree of German hardness]
   iwh: Inflowing water hardness [degree of German hardness]
-  flo: always "0", may be water flow liters per minute
+  flo: mostly "0", may be water flow liters per minute
   res: rest capacity in liters (??) 92% = 975
   info1: Detailed information regarding storage 1
   info2: Detailed information regarding storage 2
