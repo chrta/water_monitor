@@ -1,12 +1,28 @@
 <div class="gridster">
   <ul>
-    <li data-row="1" data-col="1" data-sizex="2" data-sizey="1">
-      <div class="widget-welcome"
-           data-widget="Text"
-           data-source="text"
-           data-title="Hello"
-           data-text="This is your shiny new dashboard."
-           data-moreinfo="Protip: You can drag the widgets around!"></div>
+    <li data-row="1"
+        data-col="1"
+        data-sizex="1"
+        data-sizey="1">
+      <div class="widget-synergy"
+           data-widget="Meter"
+           data-source="water_flow_lpm"
+           data-title="Water Flow[l/m]"
+           data-min="0"
+           data-max="100"
+           data-step="0.1"></div>
+    </li>
+
+    <li data-row="1"
+        data-col="2"
+        data-sizex="1"
+        data-sizey="1">
+      <div class="widget-synergy"
+           data-widget="Meter"
+           data-source="remaining_capacity"
+           data-title="Remaining Capacity[l]"
+           data-min="0"
+           data-max="1060"></div>
     </li>
 
     <li data-row="1"
@@ -22,7 +38,7 @@
            data-step="0.1"></div>
     </li>
 
-        <li data-row="1"
+    <li data-row="1"
         data-col="4"
         data-sizex="1"
         data-sizey="1">

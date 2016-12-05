@@ -26,3 +26,7 @@ end
 job :water_pressure_bar, do: Kitto.Jobs.SyrDeviceInfo.stream(:prs, &(broadcast!(:water_pressure_bar, &1)))
 
 job :remaining_salt, do: Kitto.Jobs.SyrDeviceInfo.stream({:info1, :ss}, &(broadcast!(:remaining_salt, &1)))
+
+job :remaining_capacity, do: Kitto.Jobs.SyrDeviceInfo.stream(:res, &(broadcast!(:remaining_capacity, &1)))
+
+job :water_flow_lpm, do: Kitto.Jobs.SyrDeviceInfo.stream(:flo, &(broadcast!(:water_flow_lpm, &1)))
