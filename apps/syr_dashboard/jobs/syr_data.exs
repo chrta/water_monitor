@@ -14,6 +14,7 @@ defmodule Kitto.Jobs.SyrDeviceInfo do
 				 _ -> :skip
 			       end
 	  _ -> case event do
+		 {_, %{:dat => epoch}} -> fun.(%{text: epoch})
 		 {_, %{^id => value}} -> fun.(%{value: value})
 		 _ -> :skip
 	       end
@@ -30,3 +31,5 @@ job :remaining_salt, do: Kitto.Jobs.SyrDeviceInfo.stream({:info1, :ss}, &(broadc
 job :remaining_capacity, do: Kitto.Jobs.SyrDeviceInfo.stream(:res, &(broadcast!(:remaining_capacity, &1)))
 
 job :water_flow_lpm, do: Kitto.Jobs.SyrDeviceInfo.stream(:flo, &(broadcast!(:water_flow_lpm, &1)))
+
+job :device_date_time, do: Kitto.Jobs.SyrDeviceInfo.stream(:dat, &(broadcast!(:device_date_time, &1)))

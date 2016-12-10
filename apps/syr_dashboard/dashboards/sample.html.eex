@@ -50,6 +50,18 @@
            data-max="24"
            data-step="1"></div>
     </li>
+    <li data-row="3"
+        data-col="1"
+        data-sizex="1"
+        data-sizey="1">
+      <div class="widget-synergy"
+           data-widget="Text"
+           data-source="device_date_time"
+           data-title="Date Time"
+           data-text="Empty"
+           </div>
+    </li>
+
 <!--
     <li data-row="1"
         data-col="5"
