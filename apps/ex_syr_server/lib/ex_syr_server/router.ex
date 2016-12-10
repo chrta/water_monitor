@@ -10,6 +10,9 @@ defmodule ExSyrServer.Router do
 
   @webservices "/WebServices/SyrConnectLimexWebService.asmx"
 
+  @doc"""
+  Registers the given function to be called before sending the response
+  """
   def register_before_send_plug(conn, opts) do
     conn |> register_before_send(opts[:func])
   end
@@ -19,12 +22,6 @@ defmodule ExSyrServer.Router do
 
   It only unterstands upper case, e.g. Content-Length
   """
-
-  #@spec before_send(Plug.Conn.t) :: Plug.Conn.t
-  #def before_send(%Plug.Conn{adapter: {Plug.Adapters.Test.Conn, _}} = conn) do
-  #  conn
-  #end
-
   @spec before_send(Plug.Conn.t) :: Plug.Conn.t
   def before_send(conn) do
     %{conn | resp_headers: Enum.map(conn.resp_headers, fn({key, value}) ->
@@ -36,28 +33,43 @@ defmodule ExSyrServer.Router do
        end)}
   end
 
+  @doc"""
+  Handles POST http://connect.saocal.pl/GetBasicCommands
+  """
   post "/GetBasicCommands" do
     {:ok, body, conn} = conn |> read_body
     SyrController.get_basic_commands_2 conn, %{"body" => body}
   end
 
+  @doc"""
+  Handles POST http://connect.saocal.pl/GetAllCommands
+  """
   post "/GetAllCommands" do
     {:ok, body, conn} = conn |> read_body
     "xml=" <> xml_params = body
     SyrController.get_all_commands_2 conn, %{"xml" => xml_params}
   end
 
-  # This is correctly encoded -> could use regular parser
+
+  @doc"""
+  Handles POST http://syrconnect.consoft.de/WebServices/SyrConnectLimexWebService.asmx/SetPortInfo
+  """
   post @webservices <> "/SetPortInfo" do
     {:ok, body, conn} = conn |> read_body
     "xml=" <> xml_params = body
     SyrController.set_port_info conn, %{"xml" => xml_params}
   end
 
+  @doc"""
+  Handles POST http://syrconnect.consoft.de/WebServices/SyrConnectLimexWebService.asmx/GetBasicCommands
+  """
   post @webservices <> "/GetBasicCommands" do
     SyrController.get_basic_commands conn, %{}
   end
 
+  @doc"""
+  Handles POST http://syrconnect.consoft.de/WebServices/SyrConnectLimexWebService.asmx/GetAllCommands
+  """
   post @webservices <> "/GetAllCommands" do
     SyrController.get_all_commands conn, %{}
   end
