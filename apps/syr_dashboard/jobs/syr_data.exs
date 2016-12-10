@@ -2,6 +2,10 @@ use Kitto.Job.DSL
 
 defmodule Kitto.Jobs.SyrDeviceInfo do
 
+  defp get_date_time_string(epoch) do
+    epoch |> DateTime.from_unix! |> DateTime.to_string
+  end
+
   def stream(id, fun) do
     Task.start_link fn ->
       stream = GenEvent.stream(:syr_event_manager)
@@ -14,7 +18,7 @@ defmodule Kitto.Jobs.SyrDeviceInfo do
 				 _ -> :skip
 			       end
 	  _ -> case event do
-		 {_, %{:dat => epoch}} -> fun.(%{text: epoch})
+		 {_, %{:dat => epoch}} -> fun.(%{text: get_date_time_string(epoch)})
 		 {_, %{^id => value}} -> fun.(%{value: value})
 		 _ -> :skip
 	       end

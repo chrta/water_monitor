@@ -153,7 +153,13 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     %{acc | rti: value}
   end
   def populate(%{name: 'getDAT', value: value}, acc) do
-    %{acc | dat: value}
+    number = String.to_integer(value)
+    #here follows a bugfix for negative timestamps....
+    epoch = cond do
+      number < 0 -> number + round(:math.pow(2,32))
+      true -> number
+    end
+    %{acc | dat: epoch}
   end
 
 end
