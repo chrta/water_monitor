@@ -6,6 +6,14 @@ defmodule Kitto.Jobs.SyrDeviceInfo do
     epoch |> DateTime.from_unix! |> DateTime.to_string
   end
 
+  defp notify(:dat, value, fun) do
+    fun.(%{text: get_date_time_string(value)})
+  end
+
+  defp notify(_, value, fun) do
+    fun.(%{value: value})
+  end
+
   def stream(id, fun) do
     Task.start_link fn ->
       stream = GenEvent.stream(:syr_event_manager)
@@ -18,8 +26,7 @@ defmodule Kitto.Jobs.SyrDeviceInfo do
 				 _ -> :skip
 			       end
 	  _ -> case event do
-		 {_, %{:dat => epoch}} -> fun.(%{text: get_date_time_string(epoch)})
-		 {_, %{^id => value}} -> fun.(%{value: value})
+		 {_, %{^id => value}} -> notify(id, value, fun)
 		 _ -> :skip
 	       end
 	end
