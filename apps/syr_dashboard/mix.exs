@@ -26,7 +26,7 @@ defmodule SyrDashboard.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:kitto, github: "chrta/kitto", branch: "bugfix-for-#52"}
+      {:kitto, "~> 0.3.2"}
     ]
   end
 end
