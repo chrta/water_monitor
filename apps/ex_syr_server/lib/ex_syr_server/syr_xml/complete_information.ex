@@ -123,13 +123,16 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     %{acc | res: number}
   end
   def populate(%{name: 'getVS1', value: value}, acc) do
-    put_in acc.info1.vs, value
+    number = String.to_integer(value)
+    put_in acc.info1.vs, number
   end
   def populate(%{name: 'getVS2', value: value}, acc) do
-    put_in acc.info2.vs, value
+    number = String.to_integer(value)
+    put_in acc.info2.vs, number
   end
   def populate(%{name: 'getVS3', value: value}, acc) do
-    put_in acc.info3.vs, value
+    number = String.to_integer(value)
+    put_in acc.info3.vs, number
   end
   def populate(%{name: 'getCS1', value: value}, acc) do
     number = String.to_integer(value)
