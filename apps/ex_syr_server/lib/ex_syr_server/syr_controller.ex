@@ -113,7 +113,6 @@ xml=<?xml version="1.0" encoding="utf-8"?>
   def set_port_info(conn, %{"xml" => xml_params}) do
     port_info =
       xml_params |> to_charlist |> SyrXml.parse_port_info
-    Logger.info "Received well fomed port information"
     Logger.debug "Port info: #{inspect(port_info)}"
     GenEvent.notify :syr_event_manager, {:port_info, port_info}
     body = '''
@@ -192,7 +191,6 @@ Content-Length: 242
   """
   def get_all_commands(conn, %{"xml" => xml_params}) do
     state = xml_params |> to_charlist |> SyrXml.parse_complete_info
-    Logger.info "Received well formed device state"
     Logger.debug "Device info: #{inspect(state)}"
 
     GenEvent.notify :syr_event_manager, {:state, state}
