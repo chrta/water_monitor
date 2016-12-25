@@ -37,17 +37,14 @@ defmodule ExSyrServer.Router do
   Handles POST http://connect.saocal.pl/GetBasicCommands
   """
   post "/GetBasicCommands" do
-    {:ok, body, conn} = conn |> read_body
-    SyrController.get_basic_commands_2 conn, %{"body" => body}
+    send_resp(conn, 502, "502 Bad Gateway")
   end
 
   @doc"""
   Handles POST http://connect.saocal.pl/GetAllCommands
   """
   post "/GetAllCommands" do
-    {:ok, body, conn} = conn |> read_body
-    "xml=" <> xml_params = body
-    SyrController.get_all_commands_2 conn, %{"xml" => xml_params}
+    send_resp(conn, 502, "502 Bad Gateway")
   end
 
 
@@ -62,6 +59,11 @@ defmodule ExSyrServer.Router do
 
   @doc"""
   Handles POST http://syrconnect.consoft.de/WebServices/SyrConnectLimexWebService.asmx/GetBasicCommands
+
+  No data is transmitted from the device to the server.
+
+  This seems to be the first request, and only this.
+  After this request, only GetAllCommands is used.
   """
   post @webservices <> "/GetBasicCommands" do
     SyrController.get_basic_commands conn, %{}
@@ -71,7 +73,9 @@ defmodule ExSyrServer.Router do
   Handles POST http://syrconnect.consoft.de/WebServices/SyrConnectLimexWebService.asmx/GetAllCommands
   """
   post @webservices <> "/GetAllCommands" do
-    SyrController.get_all_commands conn, %{}
+    {:ok, body, conn} = conn |> read_body
+    "xml=" <> xml_params = body
+    SyrController.get_all_commands conn, %{"xml" => xml_params}
   end
 
   match _ do

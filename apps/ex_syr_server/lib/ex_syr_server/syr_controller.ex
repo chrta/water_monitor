@@ -6,10 +6,63 @@ defmodule ExSyrServer.SyrController do
   require Logger
 
 
-  @get_all_commands_reply_body '<sc version="1.0"><d><c n="getSRN" /><c n="getSTA" /><c n="getMAC" /><c n="getDEN" /><c n="getDN1" /><c n="getDN2" /><c n="getDEV" /><c n="getSCR" /><c n="getVER" /><c n="getFIR" /><c n="getLGO" /><c n="getPRS" /><c n="getPST" /><c n="getWHU" /><c n="getOWH" /><c n="getIWH" /><c n="getFLO" /><c n="getRES" /><c n="getSCR" /><c n="getVS1" /><c n="getVS2" /><c n="getVS3" /><c n="getCS1" /><c n="getCS2" /><c n="getCS3" /><c n="getSS1" /><c n="getSS2" /><c n="getSS3" /><c n="getRG1" /><c n="getRG2" /><c n="getRG3" /><c n="getPA1" /><c n="getPA2" /><c n="getPA3" /><c n="getLAN" /><c n="getCYN" /><c n="getCYT" /><c n="getRTI" /><c n="getDAT" /><c n="setRCE" v="0" /></d></sc>'
-
-  @get_basic_commands_reply_body '<sc version="1.0"><d><c n="getSRN" /><c n="getSTA" /><c n="getMAC" /><c n="getDEN" /><c n="getDN1" /><c n="getDN2" /><c n="getDEV" /><c n="getSCR" /><c n="getVER" /><c n="getFIR" /><c n="getLGO" /><c n="getPRS" /><c n="getPST" /><c n="getWHU" /><c n="getOWH" /><c n="getIWH" /><c n="getFLO" /><c n="getRES" /><c n="getSCR" /><c n="getVS1" /><c n="getVS2" /><c n="getVS3" /><c n="getCS1" /><c n="getCS2" /><c n="getCS3" /><c n="getSS1" /><c n="getSS2" /><c n="getSS3" /><c n="getRG1" /><c n="getRG2" /><c n="getRG3" /><c n="getPA1" /><c n="getPA2" /><c n="getPA3" /><c n="getLAN" /><c n="getCYN" /><c n="getCYT" /><c n="getRTI" /><c n="getDAT" /><c n="setRCE" v="0" /></d></sc>'
-
+  @get_all_commands_reply_body '''
+<?xml version="1.0" encoding="utf-8"?>
+<sc version="1.0">
+  <d>
+    <c n="getSRN" v="" />
+    <c n="getCNA" v="" />
+    <c n="getDEN" v="" />
+    <c n="getMAC" v="" />
+    <c n="getMAN" v="" />
+    <c n="getSTA" v="" />
+    <c n="getALM" v="" />
+    <c n="getCDE" v="" />
+    <c n="getCS1" v="" />
+    <c n="getCS2" v="" />
+    <c n="getCS3" v="" />
+    <c n="getCYN" v="" />
+    <c n="getTYP" v="" />
+    <c n="getCYT" v="" />
+    <c n="getDWF" v="" />
+    <c n="getFCO" v="" />
+    <c n="getFIR" v="" />
+    <c n="getFLO" v="" />
+    <c n="getNOT" v="" />
+    <c n="getPA1" v="" />
+    <c n="getPA2" v="" />
+    <c n="getPA3" v="" />
+    <c n="getPRS" v="" />
+    <c n="getPST" v="" />
+    <c n="getRDO" v="" />
+    <c n="getRES" v="" />
+    <c n="getRG1" v="" />
+    <c n="getRG2" v="" />
+    <c n="getRG3" v="" />
+    <c n="getRPD" v="" />
+    <c n="getRPW" v="" />
+    <c n="getRTI" v="" />
+    <c n="getSCR" v="" />
+    <c n="getSRE" v="" />
+    <c n="getSS1" v="" />
+    <c n="getSS2" v="" />
+    <c n="getSS3" v="" />
+    <c n="getSV1" v="" />
+    <c n="getSV2" v="" />
+    <c n="getSV3" v="" />
+    <c n="getWHU" v="" />
+    <c n="getTOR" v="" />
+    <c n="getVER" v="" />
+    <c n="getVS1" v="" />
+    <c n="getVS2" v="" />
+    <c n="getVS3" v="" />
+    <c n="getOWH" v="" />
+    <c n="getRTH" v="" />
+    <c n="getRTM" v="" />
+    <c n="getIWH" v="" />
+  </d>
+</sc>
+'''
 
   @spec xml(Plug.Conn.t, String.Chars.t) :: Plug.Conn.t
   defp xml(conn, data) do
@@ -30,6 +83,8 @@ defmodule ExSyrServer.SyrController do
   @doc """
 
   Handles the second POST request
+
+  Now validation is done here. The reply is always ok.
 
   This is the request from the device
 POST /WebServices/SyrConnectLimexWebService.asmx/SetPortInfo HTTP/1.1
@@ -60,14 +115,23 @@ xml=<?xml version="1.0" encoding="utf-8"?>
     Logger.info "Received well fomed port information"
     Logger.debug "Port info: #{inspect(port_info)}"
     GenEvent.notify :syr_event_manager, {:port_info, port_info}
+    body = '''
+<?xml version="1.0" encoding="utf-8"?>
+<sc>
+  <pl>
+    <p n="#{Enum.at port_info.pl, 0}" v="ok" />
+    <p n="#{Enum.at port_info.pl, 1}" v="ok" />
+  </pl>
+</sc>
+'''
     
-    xml conn, '<?xml version="1.0" encoding="utf-8"?>'
+    xml conn, body
   end
 
 
   @doc """
 
-  Handles the third post request
+  Handles the last post request before the data flow is established
 
   Server response:
 
@@ -125,53 +189,13 @@ Content-Length: 242
   Currently a error 500 is returned
 
   """
-  def get_all_commands(conn, _params) do
-    body = 'Die Transaktion (Prozess-ID 109) befand sich auf Sperre Ressourcen aufgrund eines anderen Prozesses in einer Deadlocksituation und wurde als Deadlockopfer ausgew&#228;hlt. F&#252;hren Sie die Transaktion erneut aus.'
-    conn
-    |> put_status(500)
-    |> text(body)
-  end
-
-
-  @doc """
-  Handles the /GetBasicCommands POST request
-
-The request contains this:
-
-<?xml version='1.0' encoding='iso-8859-2'?>
-<sc version="1.0">
-<d>
-<c n="getSRN" v="162509513" />
-<c n="getMAC" v="70:b3:d5:19:4a:66" />
-<c n="getMAN" v="Syr" />
-<c n="getDEN" v="1" />
-<c n="getSTA" v=" " />
-<c n="getDAT" v="1478962590" />
-<c n="getCNA" v="LEXplus10" />
-</d>
-</sc>
-
-  """
-
-  def get_basic_commands_2(conn, %{"body" => body}) do
-    device_info = body |> to_charlist |> SyrXml.parse_device_info
-    Logger.info "Received well formed device information"
-    Logger.debug "Device info: #{inspect(device_info)}"
-
-    GenEvent.notify :syr_event_manager, {:device_info, device_info}
-    html conn, @get_basic_commands_reply_body
-  end
-
-  @doc """
-  Handles post request to http://connect.saocal.pl/GetAllCommands
-  """
-  def get_all_commands_2(conn, %{"xml" => xml_params}) do
+  def get_all_commands(conn, %{"xml" => xml_params}) do
     state = xml_params |> to_charlist |> SyrXml.parse_complete_info
     Logger.info "Received well formed device state"
     Logger.debug "Device info: #{inspect(state)}"
 
     GenEvent.notify :syr_event_manager, {:state, state}
     xml conn, @get_all_commands_reply_body
-  end
 
+  end
 end

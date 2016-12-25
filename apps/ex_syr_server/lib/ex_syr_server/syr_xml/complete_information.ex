@@ -6,7 +6,11 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
   @doc"""
   
   serial: The serial number of the device
+  cna: The device model, e.g. "LEXplus10"
+  man: Manufacturer, e.g. "Syr"
   sta: always empty ""
+  alm: always empty ""
+  cde: Some kind of version and variant identifier, e.g. "010SCA19DF0917.01.024.1.1.0010"
   mac: The ethernet MAC address
   den: always "1"
   dn1: always "", may be "holiday mode" start
@@ -31,14 +35,37 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
   cyt: time, always "00:00"
   rti: Regeneration time, always "00:00" (?)
   dat: Unix timestamp epoch
+  typ: ???, e.g. 80
+  dwf: ???, e.g. 200
+  fco: ???, e.g. 0
+  not: ???, e.g. ""
+  rdo: ???, e.g. 80
+  rpd: ???, e.g. 4
+  rpw: ???, e.g. 0
+  sre: ???, e.g. 0
+  tor: ???, e.g. 17
+  rth: ???, e.g. 1
+  rtm: ???, e.g. 10
   """
-  defstruct serial: "", sta: "", mac: "", den: "", dn1: "", dn2: "", dev: "", scr: "", ver: "", fir: "", lgo: "", prs: 0, pst: "", whu: "", owh: 0, iwh: 0, flo: "", res: 0, info1: %SubInfo{}, info2: %SubInfo{}, info3: %SubInfo{}, lan: "", cyn: "", cyt: "", rti: "", dat: ""
+  defstruct serial: "", cna: "", man: "", sta: "", alm: "", cde: "", mac: "", den: "", dn1: "", dn2: "", dev: "", scr: "", ver: "", fir: "", lgo: "", prs: 0, pst: "", whu: "", owh: 0, iwh: 0, flo: "", res: 0, info1: %SubInfo{}, info2: %SubInfo{}, info3: %SubInfo{}, lan: "", cyn: "", cyt: "", rti: "", dat: "", typ: 0, dwf: 0, fco: 0, not: "", rdo: 0, rpd: 0, rpw: 0, sre: 0, tor: 0, rth: 0, rtm: 0
   
   def populate(%{name: 'getSRN', value: value}, acc) do
     %{acc | serial: value}
   end
+  def populate(%{name: 'getCNA', value: value}, acc) do
+    %{acc | cna: value}
+  end
+  def populate(%{name: 'getMAN', value: value}, acc) do
+    %{acc | man: value}
+  end
   def populate(%{name: 'getSTA', value: value}, acc) do
     %{acc | sta: value}
+  end
+  def populate(%{name: 'getALM', value: value}, acc) do
+    %{acc | alm: value}
+  end
+  def populate(%{name: 'getCDE', value: value}, acc) do
+    %{acc | cde: value}
   end
   def populate(%{name: 'getMAC', value: value}, acc) do
     %{acc | mac: value}
@@ -122,6 +149,18 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     number = String.to_integer(value)
     put_in acc.info3.ss, number
   end
+  def populate(%{name: 'getSV1', value: value}, acc) do
+    number = String.to_integer(value)
+    put_in acc.info1.sv, number
+  end
+  def populate(%{name: 'getSV2', value: value}, acc) do
+    number = String.to_integer(value)
+    put_in acc.info2.sv, number
+  end
+  def populate(%{name: 'getSV3', value: value}, acc) do
+    number = String.to_integer(value)
+    put_in acc.info3.sv, number
+  end
   def populate(%{name: 'getRG1', value: value}, acc) do
     put_in acc.info1.rg, value
   end
@@ -160,6 +199,49 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
       true -> number
     end
     %{acc | dat: epoch}
+  end
+  def populate(%{name: 'getTYP', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | typ: number}
+  end
+  def populate(%{name: 'getDWF', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | dwf: number}
+  end
+  def populate(%{name: 'getFCO', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | fco: number}
+  end
+  def populate(%{name: 'getNOT', value: value}, acc) do
+    %{acc | not: value}
+  end
+  def populate(%{name: 'getRDO', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | rdo: number}
+  end
+  def populate(%{name: 'getRPD', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | rpd: number}
+  end
+  def populate(%{name: 'getRPW', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | rpw: number}
+  end
+  def populate(%{name: 'getSRE', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | sre: number}
+  end
+  def populate(%{name: 'getTOR', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | tor: number}
+  end
+  def populate(%{name: 'getRTH', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | rth: number}
+  end
+  def populate(%{name: 'getRTM', value: value}, acc) do
+    number = String.to_integer(value)
+    %{acc | rtm: number}
   end
 
 end
