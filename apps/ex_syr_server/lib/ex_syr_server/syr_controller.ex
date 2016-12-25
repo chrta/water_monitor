@@ -60,6 +60,7 @@ defmodule ExSyrServer.SyrController do
     <c n="getRTH" v="" />
     <c n="getRTM" v="" />
     <c n="getIWH" v="" />
+    <c n="getDAT" v="" />
   </d>
 </sc>
 '''
