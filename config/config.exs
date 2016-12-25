@@ -16,4 +16,4 @@ import_config "../apps/*/config/config.exs"
 #       format: "$date $time [$level] $metadata$message\n",
 #       metadata: [:user_id]
 
-config :kitto, root: Path.dirname(__DIR__) <> "/apps/syr_dashboard", port: 4005, ip: {0,0,0,0}
+config :kitto, port: 4005, ip: {0,0,0,0}, otp_app: :syr_dashboard
