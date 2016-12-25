@@ -26,8 +26,8 @@ defmodule ExSyrServer.Mixfile do
     [
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 1.0"},
-      {:sweet_xml, "~> 0.6.2"},
-      {:credo, "~> 0.4", only: [:dev, :test]},
+      {:sweet_xml, "~> 0.6.3"},
+      {:credo, "~> 0.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: :dev},
       {:observer_cli, "~> 1.1"}
     ]
