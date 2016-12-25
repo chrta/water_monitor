@@ -21,11 +21,11 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
   fir: Firmware type, e.g. "SLP0"
   lgo: always "1"
   prs: Water pressure [bar]
-  pst: always "0"
-  whu: always "0"
+  pst: always 0
+  whu: always 0
   owh: Outflowing water hardness [degree of German hardness]
   iwh: Inflowing water hardness [degree of German hardness]
-  flo: mostly "0", may be water flow liters per minute
+  flo: mostly 0, may be water flow liters per minute
   res: rest capacity in liters (??) 92% = 975
   info1: Detailed information regarding storage 1
   info2: Detailed information regarding storage 2
@@ -36,18 +36,18 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
   rti: Regeneration time, always "00:00" (?)
   dat: Unix timestamp epoch
   typ: ???, e.g. 80
-  dwf: ???, e.g. 200
+  dwf: daily water consumption, e.g. 200
   fco: ???, e.g. 0
   not: ???, e.g. ""
-  rdo: ???, e.g. 80
-  rpd: ???, e.g. 4
-  rpw: ???, e.g. 0
-  sre: ???, e.g. 0
-  tor: ???, e.g. 17
-  rth: ???, e.g. 1
-  rtm: ???, e.g. 10
+  rdo: Regeneration dosage, e.g. 80 (?)
+  rpd: Regeneration planned day, e.g. 4
+  rpw: Regeneration planned week, e.g. 0 (?)
+  rth: Regeneration time hour, e.g. 1
+  rtm: Regeneration time minutes, e.g. 10
+  sre: count of service regenerations, e.g. 0
+  tor: count of normal regenerations, e.g. 17
   """
-  defstruct serial: "", cna: "", man: "", sta: "", alm: "", cde: "", mac: "", den: "", dn1: "", dn2: "", dev: "", scr: "", ver: "", fir: "", lgo: "", prs: 0, pst: "", whu: "", owh: 0, iwh: 0, flo: "", res: 0, info1: %SubInfo{}, info2: %SubInfo{}, info3: %SubInfo{}, lan: "", cyn: "", cyt: "", rti: "", dat: "", typ: 0, dwf: 0, fco: 0, not: "", rdo: 0, rpd: 0, rpw: 0, sre: 0, tor: 0, rth: 0, rtm: 0
+  defstruct serial: "", cna: "", man: "", sta: "", alm: "", cde: "", mac: "", den: "", dn1: "", dn2: "", dev: "", scr: "", ver: "", fir: "", lgo: "", prs: 0, pst: 0, whu: 0, owh: 0, iwh: 0, flo: 0, res: 0, info1: %SubInfo{}, info2: %SubInfo{}, info3: %SubInfo{}, lan: "", cyn: "", cyt: "", rti: "", dat: "", typ: 0, dwf: 0, fco: 0, not: "", rdo: 0, rpd: 0, rpw: 0, sre: 0, tor: 0, rth: 0, rtm: 0
   
   def populate(%{name: 'getSRN', value: value}, acc) do
     %{acc | serial: value}
@@ -99,10 +99,12 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     %{acc | prs: number / 10}
   end
   def populate(%{name: 'getPST', value: value}, acc) do
-    %{acc | pst: value}
+    number = String.to_integer(value)
+    %{acc | pst: number}
   end
   def populate(%{name: 'getWHU', value: value}, acc) do
-    %{acc | whu: value}
+    number = String.to_integer(value)
+    %{acc | whu: number}
   end
   def populate(%{name: 'getOWH', value: value}, acc) do
     number = String.to_integer(value)
@@ -113,7 +115,8 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     %{acc | iwh: number}
   end
   def populate(%{name: 'getFLO', value: value}, acc) do
-    %{acc | flo: value}
+    number = String.to_integer(value)
+    %{acc | flo: number}
   end
   def populate(%{name: 'getRES', value: value}, acc) do
     number = String.to_integer(value)
@@ -129,13 +132,16 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     put_in acc.info3.vs, value
   end
   def populate(%{name: 'getCS1', value: value}, acc) do
-    put_in acc.info1.cs, value
+    number = String.to_integer(value)
+    put_in acc.info1.cs, number
   end
   def populate(%{name: 'getCS2', value: value}, acc) do
-    put_in acc.info2.cs, value
+    number = String.to_integer(value)
+    put_in acc.info2.cs, number
   end
   def populate(%{name: 'getCS3', value: value}, acc) do
-    put_in acc.info3.cs, value
+    number = String.to_integer(value)
+    put_in acc.info3.cs, number
   end
   def populate(%{name: 'getSS1', value: value}, acc) do
     number = String.to_integer(value)
@@ -162,22 +168,28 @@ defmodule ExSyrServer.SyrXml.CompleteInformation do
     put_in acc.info3.sv, number
   end
   def populate(%{name: 'getRG1', value: value}, acc) do
-    put_in acc.info1.rg, value
+    number = String.to_integer(value)
+    put_in acc.info1.rg, number
   end
   def populate(%{name: 'getRG2', value: value}, acc) do
-    put_in acc.info2.rg, value
+    number = String.to_integer(value)
+    put_in acc.info2.rg, number
   end
   def populate(%{name: 'getRG3', value: value}, acc) do
-    put_in acc.info3.rg, value
+    number = String.to_integer(value)
+    put_in acc.info3.rg, number
   end
   def populate(%{name: 'getPA1', value: value}, acc) do
-    put_in acc.info1.pa, value
+    number = String.to_integer(value)
+    put_in acc.info1.pa, number
   end
   def populate(%{name: 'getPA2', value: value}, acc) do
-    put_in acc.info2.pa, value
+    number = String.to_integer(value)
+    put_in acc.info2.pa, number
   end
   def populate(%{name: 'getPA3', value: value}, acc) do
-    put_in acc.info3.pa, value
+    number = String.to_integer(value)
+    put_in acc.info3.pa, number
   end
   def populate(%{name: 'getLAN', value: value}, acc) do
     %{acc | lan: value}
