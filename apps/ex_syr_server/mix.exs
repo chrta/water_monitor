@@ -29,7 +29,8 @@ defmodule ExSyrServer.Mixfile do
       {:sweet_xml, "~> 0.6.3"},
       {:credo, "~> 0.5", only: [:dev, :test]},
       {:ex_doc, "~> 0.14", only: :dev},
-      {:observer_cli, "~> 1.1"}
+      {:observer_cli, "~> 1.1"},
+      {:logger_file_backend, "~> 0.0.9"}
     ]
   end
 end
