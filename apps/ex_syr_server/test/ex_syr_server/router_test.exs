@@ -60,8 +60,8 @@ xml=<?xml version="1.0" encoding="utf-8"?>
 <c n="getSRN" v="123456789" />
 </d>
 <pl>
-<p n="1234" v="1" />
-<p n="5678" v="1" />
+<p n="1234" v="0" />
+<p n="5678" v="0" />
 </pl>
 <cs v="9a4"/>
 </sc>
